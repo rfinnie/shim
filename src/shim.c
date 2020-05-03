@@ -110,15 +110,17 @@ static void *ImageAddress (void *image, uint64_t size, uint64_t address)
 }
 
 /* here's a chart:
- *		i686	x86_64	aarch64
- *  64-on-64:	nyet	yes	yes
- *  64-on-32:	nyet	yes	nyet
- *  32-on-32:	yes	yes	no
+ *              64-on-64  64-on-32  32-on-32
+ *  i686        no        no        yes
+ *  x86_64      yes       yes       yes
+ *  aarch64     yes       no        no
+ *  riscv32     no        no        yes
+ *  riscv64     yes       no        no
  */
 static int
 allow_64_bit(void)
 {
-#if defined(__x86_64__) || defined(__aarch64__)
+#if defined(__x86_64__) || defined(__aarch64__) || (defined(__riscv) && (__riscv_xlen == 64))
 	return 1;
 #elif defined(__i386__) || defined(__i686__)
 	/* Right now blindly assuming the kernel will correctly detect this
@@ -142,9 +144,9 @@ allow_32_bit(void)
 #else
 	return 0;
 #endif
-#elif defined(__i386__) || defined(__i686__)
+#elif defined(__i386__) || defined(__i686__) || (defined(__riscv) && (__riscv_xlen == 32))
 	return 1;
-#elif defined(__aarch64__)
+#elif defined(__aarch64__) || (defined(__riscv) && (__riscv_xlen == 64))
 	return 0;
 #else /* assuming everything else is 32-bit... */
 	return 1;

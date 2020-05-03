@@ -33,7 +33,7 @@ static inline void pause(void)
 {
 	__asm__ __volatile__("pause");
 }
-#elif defined(__aarch64__)
+#elif defined(__aarch64__) || defined(__riscv)
 static inline void pause(void)
 {
 		__asm__ __volatile__("wfi");

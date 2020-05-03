@@ -96,6 +96,36 @@
 #endif
 #endif
 
+#if defined(__riscv)
+#if __riscv_xlen == 32
+#ifndef DEFAULT_LOADER
+#define DEFAULT_LOADER L"\\grubriscv32.efi"
+#endif
+#ifndef DEFAULT_LOADER_CHAR
+#define DEFAULT_LOADER_CHAR "\\grubriscv32.efi"
+#endif
+#ifndef EFI_ARCH
+#define EFI_ARCH L"riscv32"
+#endif
+#ifndef DEBUGDIR
+#define DEBUGDIR L"/usr/lib/debug/usr/share/shim/riscv32/"
+#endif
+#elif __riscv_xlen == 64
+#ifndef DEFAULT_LOADER
+#define DEFAULT_LOADER L"\\grubriscv64.efi"
+#endif
+#ifndef DEFAULT_LOADER_CHAR
+#define DEFAULT_LOADER_CHAR "\\grubriscv64.efi"
+#endif
+#ifndef EFI_ARCH
+#define EFI_ARCH L"riscv64"
+#endif
+#ifndef DEBUGDIR
+#define DEBUGDIR L"/usr/lib/debug/usr/share/shim/riscv64/"
+#endif
+#endif
+#endif
+
 #define FALLBACK L"\\fb" EFI_ARCH L".efi"
 #define MOK_MANAGER L"\\mm" EFI_ARCH L".efi"
 
